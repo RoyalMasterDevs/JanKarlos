@@ -1,0 +1,137 @@
+html {
+  box-sizing: border-box;
+  }
+*, *:before, *after {
+  box-sizing: inherit;
+}
+
+.header {
+   background-size: cover;
+  background-color: #333;
+  padding: 20px;
+  text-align: center;
+}
+
+.nav {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  padding: 0;
+}
+
+.nav-item {
+  margin: 0 10px;
+}
+
+body {
+  background-color: #f5f5f5;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+
+.card {
+  margin-bottom: 20px;
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+  max-width: 100%;
+}
+
+.graphic {
+    position: relative;
+    display: grid;
+    padding-top: 3rem;
+    
+  }
+
+  .graphic-man {
+    width: 100%;  
+    margin-top: -90%;  
+    right: 150px;
+  }
+  
+  .monito {
+    position: absolute;
+    top: -1070px; /* Ajusta la posición vertical */
+    right: 816px; /* Ajusta la posición horizontal */
+    z-index: 2;
+  }
+
+  .graphic-energy {
+    position: absolute;
+    top: -1200px; /* Ajusta la posición vertical */
+    right: 730px; /* Ajusta la posición horizontal */
+    transform: rotate(10deg); /* Ajusta el ángulo de rotación */
+    animation: rotateAnimation 15s infinite linear;
+  }
+
+  .graphic-man-container {
+    position: absolute;
+    top: 760px; /* Ajusta la posición vertical */
+    right: -100px; /* Ajusta la posición horizontal */
+}
+
+  .graphic-circles {
+  position: relative;
+  left: 200px; /* Ajusta la cantidad de desplazamiento hacia la derecha */
+}
+
+  .graphic-circle-1 {
+    position: absolute;
+    top: -1300px; /* Ajusta la posición vertical */
+    right: 510px; /* Ajusta la posición horizontal */
+    transform: rotate(-10deg); /* Ajusta el ángulo de rotación */
+    animation: rotateAnimations 20s infinite linear;
+  }
+  
+  .graphic-circle-2 {
+    position: absolute;
+    top: -1400px; /* Ajusta la posición vertical */
+    right: 430px; /* Ajusta la posición horizontal */
+    transform: rotate(10deg) scale(-1, 0); /* Ajusta el ángulo de rotación */
+    animation: rotateAnimation 15s infinite linear;
+
+  }
+   
+
+@keyframes circleAnimation {
+    0% {
+      transform: rotate(0deg) translateX(300px) rotate(0deg); /* Inicia en la posición inicial */
+    }
+    100% {
+      transform: rotate(360deg) translateX(300px) rotate(-360deg); /* Termina en la posición final */
+    }
+}
+  
+@keyframes rotateAnimation {
+  0% {
+    transform: rotate(0deg); /* Ángulo de inicio de la rotación */
+  }
+  100% {
+    transform: rotate(360deg); /* Ángulo de finalización de la rotación */
+  }
+}
+
+@keyframes rotateAnimations {
+  0% {
+    transform: rotate(0deg); /* Ángulo de inicio de la rotación */
+  }
+  100% {
+    transform: rotate(-360deg); /* Ángulo de finalización de la rotación */
+  }
+}
+
+
+
+
+footer.footer {
+  text-align: center;
+}
+
+
+
+  
