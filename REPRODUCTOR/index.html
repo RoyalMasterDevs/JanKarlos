@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Player</title>
+  <style>
+    .gif-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   margin-bottom: 20px;
+    }
+
+    .gif {
+    max-width: 100%;
+    height: auto;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f5f5f5;
+      background: url("IMG/fondo.jpg") center/cover no-repeat, #f5f5f5;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .player {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    .song-name {
+      font-size: 24px;
+      margin: 10px 0;
+    }
+
+    .song-author {
+      font-size: 16px;
+      color: #666;
+    }
+
+    .player-progress {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .progress-values {
+      display: flex;
+      justify-content: space-between;
+      width: 100px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .player-progress input[type="range"] {
+      flex-grow: 1;
+      margin: 0 10px;
+    }
+
+    .player-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px;
+      padding: 8px 16px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #2196f3;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #1976d2;
+    }
+
+    .btn i {
+      margin-right: 6px;
+    }
+
+    .btn-activated {
+      background-color: #f44336;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      z-index: 1;
+      padding: 10px;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+    }
+
+    .dropdown-content input[type="range"] {
+      width: 100px;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .bubbles-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      z-index: -1;
+    }
+
+    .bubble {
+      margin: 0 80px;
+      width: 80px;
+      animation-name: bubbleRise;
+      animation-duration: 4s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    .bubble:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .bubble:nth-child(2) {
+      animation-delay: .3s;
+    }
+
+    .bubble:nth-child(3) {
+      animation-delay: 2s;
+    }
+
+    .bubble:nth-child(4) {
+      animation-delay: 1s;
+    }
+
+    .bubble:nth-child(5) {
+      animation-delay: 1.3s;
+    }
+
+    .bubble:nth-child(6) {
+      animation-delay: 2.3s;
+    }
+
+    .bubble:nth-child(7) {
+      animation-delay: 1.8s;
+    }
+
+    @keyframes bubbleRise {
+      0% {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-500%);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bubbles-container">
+    <img src="IMG/1.png" alt="Note 1" class="bubble">
+    <img src="IMG/2.png" alt="Note 2" class="bubble">
+    <img src="IMG/3.png" alt="Note 3" class="bubble">
+    <img src="IMG/4.png" alt="Note 4" class="bubble">
+    <img src="IMG/5.png" alt="Note 5" class="bubble">
+    <img src="IMG/6.png" alt="Note 6" class="bubble">
+    <img src="IMG/7.png" alt="Note 7" class="bubble">
+  </div>
+  <main>
+    <div class="player">
+      <audio id="audio-player"></audio>
+      <div class="gif-container">
+        <img src="https://media.tenor.com/bVTgupXb364AAAAd/tom-and-jerry-listening-to-music.gif" alt="Animated GIF" class="gif">
+      </div>
+      <h2 id="song-name" class="song-name"></h2>
+      <p id="song-author" class="song-author"></p>
+      <div class="player-progress">
+        <div class="progress-values">
+          <span id="player-current-time">--:--</span>
+          <span id="player-duration">--:--</span>
+        </div>
+        <input type="range" id="player-progress" value="0" min="0" step="1" />
+      </div>
+      <div class="player-buttons">
+        <button id="btn-repeat" class="btn btn-repeat">
+          <i class="bi bi-repeat"></i>Repeat
+        </button>
+        <button id="btn-prev" class="btn btn-prev" onclick="changeSong(false)">
+          <i class="bi bi-rewind-fill"></i>Preview
+        </button>
+        <button id="btn-play" class="btn btn-play">
+          <i id="btn-play-icon" class="bi bi-play-fill"></i>Stop & Play
+        </button>
+        <button id="btn-next" class="btn btn-next">
+          <i class="bi bi-fast-forward-fill"></i>Next
+        </button>
+        <div class="dropdown">
+          <button id="btn-volume" class="btn btn-volume">Volume
+            <i class="bi bi-volume-up-fill"></i>
+          </button>
+          <div class="dropdown-content">
+            <input type="range" id="player-volume" value="1" min="0" max="1" step="0.01" />
+          </div>
+        </div>
+</div>
+</main>
+
+<script>
+const btnPlay = document.querySelector("#btn-play");
+const btnPlayIcon = document.querySelector("#btn-play-icon");
+const btnRepeat = document.querySelector("#btn-repeat");
+const btnPrev = document.querySelector("#btn-prev");
+const btnNext = document.querySelector("#btn-next");
+const btnVolume = document.querySelector("#btn-volume");
+const btnVolumeIcon = document.querySelector("#btn-volume i");
+const playerVolume = document.querySelector("#player-volume");
+const songName = document.querySelector("#song-name");
+const songAuthor = document.querySelector("#song-author");
+const playerCurrentTime = document.querySelector("#player-current-time");
+const playerDuration = document.querySelector("#player-duration");
+const playerProgress = document.querySelector("#player-progress");
+const audioPlayer = document.querySelector("#audio-player");
+
+let currentSong = 0;
+let repeatSong = false;
+
+const songs = [
+  {
+    name: "Mala",
+    author: "Marc Anthony",
+    path: "./SONGS/Mala.mp3",
+  },
+  {
+    name: "Bajo la tormenta",
+    author: "Sergio George's Salsa Giants",
+    path: "./SONGS/Bajo la Tormenta.mp3",
+  },
+
+  {
+    name: "De Vuelta Pa La Vuelta",
+    author: "Marc Anthony & Daddy Yankee",
+    path: "./SONGS/De Vuelta Pa La Vuelta.mp3",
+  },
+
+  {
+    name: "esta_noche_pinta_bien",
+    author: "Septeto Acarey",
+    path: "./SONGS/esta_noche_pinta_bien.mp3",
+  },
+
+  {
+    name: "ponme_una_cerveza",
+    author: "Septeto Acarey",
+    path: "./SONGS/ponme_una_cerveza.mp3",
+  },
+
+  // Agrega más canciones aquí
+];
+
+btnPlay.addEventListener("click", () => togglePlaySong());
+btnPrev.addEventListener("click", () => changeSong(false));
+btnNext.addEventListener("click", () => changeSong());
+btnRepeat.addEventListener("click", () => toggleRepeatSong());
+playerVolume.addEventListener("input", () => changeVolume());
+playerProgress.addEventListener("input", () => changeTime());
+audioPlayer.addEventListener("timeupdate", () => timeUpdate());
+audioPlayer.addEventListener("ended", () => ended());
+
+const togglePlaySong = () => {
+  if (audioPlayer.paused) {
+    audioPlayer.play();
+    document.querySelector(".gif").style.display = "block";
+    btnPlayIcon.classList.replace("bi-play-fill", "bi-pause-fill");
+  } else {
+    audioPlayer.pause();
+    document.querySelector(".gif").style.display = "none";
+    btnPlayIcon.classList.replace("bi-pause-fill", "bi-play-fill");
+  }
+};
+
+const changeSong = (next = true) => {
+  if (next) {
+    currentSong = (currentSong + 1) % songs.length;
+  } else {
+    currentSong = (currentSong - 1 + songs.length) % songs.length;
+  }
+
+  updatePlayer();
+  togglePlaySong();
+};
+
+const updatePlayer = () => {
+  const song = songs[currentSong];
+
+  songName.innerHTML = song.name;
+  songAuthor.innerHTML = song.author;
+  audioPlayer.src = song.path;
+  playerProgress.value = audioPlayer.currentTime;
+};
+
+const toggleRepeatSong = () => {
+  repeatSong = !repeatSong;
+  btnRepeat.classList.toggle("btn-activated");
+};
+
+const timeUpdate = () => {
+  const { currentTime, duration } = audioPlayer;
+
+  if (isNaN(duration)) return;
+
+  playerDuration.innerHTML = formatSecondsToMinutes(duration);
+  playerCurrentTime.innerHTML = formatSecondsToMinutes(currentTime);
+  playerProgress.max = duration;
+  playerProgress.value = currentTime;
+};
+
+const changeVolume = () => {
+  const { value } = playerVolume;
+
+  audioPlayer.volume = value;
+
+  if (value == 0) {
+    btnVolumeIcon.classList.replace("bi-volume-up-fill", "bi-volume-mute-fill");
+  } else {
+    btnVolumeIcon.classList.replace("bi-volume-mute-fill", "bi-volume-up-fill");
+  }
+};
+
+const changeTime = () => {
+  audioPlayer.currentTime = playerProgress.value;
+};
+
+const formatSecondsToMinutes = (seconds) => {
+  return new Date(seconds * 1000).toISOString().slice(14, 19);
+};
+
+const ended = () => {
+  repeatSong ? togglePlaySong() : changeSong(true);
+};
+
+window.onload = () => {
+  updatePlayer();
+};
+</script>
+</body>
+
+</html>
